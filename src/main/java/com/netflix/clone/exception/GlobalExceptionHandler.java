@@ -16,7 +16,7 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(BadCredentialsException.class)
@@ -92,7 +92,9 @@ public class GlobalExceptionHandler {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		
 		return ResponseEntity.status(status)
-				.body(Map.of("timestamp", Instant.now(), "status", status, "error", message));
+				.body(Map.of("timestamp", Instant.now(),
+						"status", status.value(),
+						"error", message));
 	}
 	
 	@ExceptionHandler({AsyncRequestNotUsableException.class, ClientAbortException.class})
@@ -112,5 +114,5 @@ public class GlobalExceptionHandler {
 		
 		return ResponseEntity.status(status).body(body);
 	}
-
+	
 }
