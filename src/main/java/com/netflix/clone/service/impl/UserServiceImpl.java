@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
