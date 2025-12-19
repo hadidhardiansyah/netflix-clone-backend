@@ -1,6 +1,7 @@
 package com.netflix.clone.dao;
 
 import com.netflix.clone.entity.User;
+import com.netflix.clone.entity.Video;
 import com.netflix.clone.enums.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,4 +35,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query("SELECT v.id FROM User u JOIN u.watchList v WHERE u.email = :email AND v.id IN :videoIds")
 	Set<Long> findWatchListVideoIdsByEmailAndVideoIds(String email, List<Long> videoIds);
+	
+	@Query(
+			"SELECT v FROM User u JOIN u.watchList v " +
+					"WHERE u.id = :id AND v.published = true AND" +
+					"(LOWER(v.title) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+					"LOWER(v.description) LIKE LOWER(CONCAT('%', :search, '%')))"
+	)
+	Page<Video> searchWatchlistByUserId(Long id, String search, Pageable pageable);
+	
+	@Query("SELECT v FROM User u JOIN u.watchList v WHERE u.id = :id AND v.published = true")
+	Page<Video> findWatchlistByUserId(Long id, Pageable pageable);
 }
