@@ -120,7 +120,7 @@ public class VideoServiceImpl implements VideoService {
 		Pageable pageable = PaginationUtils.createPageRequest(page, size, "id");
 		Page<Video> videoPage;
 		
-		if (search != null && search.trim().isEmpty()) {
+		if (search != null && !search.trim().isEmpty()) {
 			videoPage = videoRepository.searchPublishedVideos(search.trim(), pageable);
 		} else {
 			videoPage = videoRepository.findPublishedVideos(pageable);
